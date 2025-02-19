@@ -68,6 +68,13 @@ const authController = {
 
     },
     async login(req : Request, res : Response) {
+        /**
+            #swagger.requestBody = {
+                required : true,
+                schema : {$ref : '#/components/schemas/LoginRequest'}
+            }
+         */
+        
         const { identifier, password } = req.body as unknown as LoginType;
 
         try {
@@ -118,6 +125,11 @@ const authController = {
 
     },
     async me(req : IReqUser, res : Response) {
+        /**
+            #swagger.security = [{
+                "bearerAuth" : []
+            }]
+         */
         try {
             const result = await UserModel.find({_id : req.user?.id})
             res.status(200).json({

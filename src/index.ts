@@ -2,19 +2,24 @@ import express, { Request, Response } from "express";
 import router from "./routes/api";
 import bodyParser from "body-parser";
 import db from "./utils/database";
+import docs from "./docs/routes";
+import cors from "cors";
 
 // Init function to start the server
 async function init() {
     try {
         // Connect to the database
         const result = await db();
-        console.log(`Database Status : ${result}`)
+        console.log(`Database Status : ${result}`);
 
         // Create an express app
         const app = express();
 
         // Define the port
         const PORT = 3000;
+
+        // cors initialization
+        app.use(cors());    
 
         // Use the body parser middleware
         app.use(bodyParser.json());
@@ -27,6 +32,9 @@ async function init() {
                 data: "Welcome to the dummy app",
             });
         });
+
+        // documentation routes
+        docs(app);
 
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`);
