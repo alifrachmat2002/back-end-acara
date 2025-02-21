@@ -30,6 +30,9 @@ const doc = {
             LoginRequest : {
                 identifier : "akunvercel",
                 password : "password"
+            },
+            ActivationRequest : {
+                code : "abcdef"
             }
         }
     }
