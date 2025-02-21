@@ -16,6 +16,7 @@ This is the backend service for the **Event Booking & Management** app, built as
 - **Mongoose** (ODM for MongoDB)
 - **JSON Web Tokens (JWT)** (Authentication)
 - **Dotenv** (Environment variables management)
+- **Swagger** (API Documentation)
 
 ## Installation & Setup
 
@@ -42,13 +43,16 @@ This is the backend service for the **Event Booking & Management** app, built as
 - `npm run build` - Compiles TypeScript to JavaScript
 - `npm start` - Runs the compiled JavaScript files
 
-## API Endpoints (Example)
-| Method | Endpoint         | Description         |
-|--------|----------------|---------------------|
-| GET    | `/api/events`  | Fetch all events   |
-| POST   | `/api/events`  | Create an event    |
-| GET    | `/api/bookings` | Fetch user bookings |
-| POST   | `/api/bookings` | Book an event      |
+## API Endpoints 
+| Method | Endpoint              | Description                |
+|--------|-----------------------|----------------------------|
+| POST   | `/api/auth/register`  | Register a new user        |
+| POST   | `/api/auth/login`     | Authenticate user login    |
+| GET    | `/api/auth/me`        | Fetch authenticated user   |
+| POST    | `/api/auth/activation` | Activate user account      |
+| POST   | `/api/events`         | Create an event            |
+| GET    | `/api/bookings`       | Fetch user bookings        |
+| POST   | `/api/bookings`       | Book an event              |
 
 ## Contributing
 Feel free to fork and contribute by submitting a pull request.
