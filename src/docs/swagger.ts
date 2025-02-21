@@ -31,6 +31,13 @@ const doc = {
                 identifier : "akunvercel",
                 password : "password"
             },
+            RegisterRequest : {
+                username: "alipalip",
+                fullName: "Alif Rachmat Illahi",
+                email : "myguyalip2@yopmail.com",
+                password : "P4ssword",
+                confirmPassword : "P4ssword"
+            },
             ActivationRequest : {
                 code : "abcdef"
             }

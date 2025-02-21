@@ -65,11 +65,23 @@ const registerValidateSchema = Yup.object({
 
 const authController = {
     async register(req : Request, res : Response ) {
-        const { username, fullName, email, password, confirmPassword } = req.body as unknown as RegisterType;
-        
+        /**
+            #swagger.tags = ["Auth"]
+            #swagger.requestBody = {
+                required : true,
+                schema : {$ref : '#/components/schemas/RegisterRequest'}
+            }
+         */
+        const { username, fullName, email, password, confirmPassword } =
+            req.body as unknown as RegisterType;
+
         try {
             await registerValidateSchema.validate({
-                username, fullName, email, password, confirmPassword
+                username,
+                fullName,
+                email,
+                password,
+                confirmPassword,
             });
 
             const result = await UserModel.create({
@@ -80,58 +92,56 @@ const authController = {
             });
 
             res.status(200).json({
-                message : "Registration completed succesfully!",
-                data : {
+                message: "Registration completed succesfully!",
+                data: {
                     username,
                     fullName,
-                    email
-                }
-            })
-
-        }
-        catch (error) {
-            const err = error as unknown as Error 
+                    email,
+                },
+            });
+        } catch (error) {
+            const err = error as unknown as Error;
 
             res.status(400).json({
-                message : err.message,
-                data : null
-            })
+                message: err.message,
+                data: null,
+            });
         }
-
     },
     async login(req : Request, res : Response) {
         /**
+            #swagger.tags = ["Auth"]
             #swagger.requestBody = {
                 required : true,
                 schema : {$ref : '#/components/schemas/LoginRequest'}
             }
          */
-        
+
         const { identifier, password } = req.body as unknown as LoginType;
 
         try {
-            await loginValidateSchema.validate({identifier, password});
+            await loginValidateSchema.validate({ identifier, password });
 
             const userByIdentifier = await UserModel.findOne({
-                $or : [
+                $or: [
                     {
-                        email : identifier
+                        email: identifier,
                     },
                     {
-                        username : identifier
+                        username: identifier,
                     },
                 ],
-                isActive : true
+                isActive: true,
             });
 
-            
             if (!userByIdentifier) {
                 return res.status(403).json({
-                    message : "The credentials don't match any of our records"
-                })
+                    message: "The credentials don't match any of our records",
+                });
             }
-            
-            const passwordIsValid = encrypt(password) === userByIdentifier.password
+
+            const passwordIsValid =
+                encrypt(password) === userByIdentifier.password;
 
             if (!passwordIsValid) {
                 return res.status(403).json({
@@ -140,43 +150,40 @@ const authController = {
             }
 
             const token = generateToken({
-                id : userByIdentifier._id,
-                role : userByIdentifier.role
+                id: userByIdentifier._id,
+                role: userByIdentifier.role,
             });
 
             res.status(200).json({
-                message : "Login Successful!",
-                data : token
-            })
-            
+                message: "Login Successful!",
+                data: token,
+            });
         } catch (error) {
-            const err = error as unknown as Error
+            const err = error as unknown as Error;
             res.status(400).json({
-                message : err.message
-            })
+                message: err.message,
+            });
         }
-
     },
     async me(req : IReqUser, res : Response) {
         /**
+            #swagger.tags = ["Auth"]
             #swagger.security = [{
                 "bearerAuth" : []
             }]
          */
         try {
-            const result = await UserModel.find({_id : req.user?.id})
+            const result = await UserModel.find({ _id: req.user?.id });
             res.status(200).json({
-                message : `Hello User, here's you`,
-                data : result
-            })
+                message: `Hello User, here's you`,
+                data: result,
+            });
         } catch (error) {
             const err = error as unknown as Error;
             res.status(400).json({
-                message : err.message
-            })
+                message: err.message,
+            });
         }
-
-
     },
     async activation(req : Request, res : Response) { 
         /**

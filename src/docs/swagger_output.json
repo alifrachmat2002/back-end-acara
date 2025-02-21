@@ -18,6 +18,9 @@
   "paths": {
     "/auth/register": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -28,27 +31,16 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "username": {
-                    "example": "any"
-                  },
-                  "fullName": {
-                    "example": "any"
-                  },
-                  "email": {
-                    "example": "any"
-                  },
-                  "password": {
-                    "example": "any"
-                  },
-                  "confirmPassword": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
               }
             }
           }
@@ -57,6 +49,9 @@
     },
     "/auth/login": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -88,6 +83,9 @@
     },
     "/auth/me": {
       "get": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -161,6 +159,34 @@
         },
         "xml": {
           "name": "LoginRequest"
+        }
+      },
+      "RegisterRequest": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "alipalip"
+          },
+          "fullName": {
+            "type": "string",
+            "example": "Alif Rachmat Illahi"
+          },
+          "email": {
+            "type": "string",
+            "example": "myguyalip2@yopmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "P4ssword"
+          },
+          "confirmPassword": {
+            "type": "string",
+            "example": "P4ssword"
+          }
+        },
+        "xml": {
+          "name": "RegisterRequest"
         }
       },
       "ActivationRequest": {
