@@ -195,6 +195,12 @@ const authController = {
          */
         try {
             const { code } = req.body as { code : string }
+            if (!code) {
+                return res.status(400).json({
+                    messsage : "The Activation Code is invalid",
+                    data : null
+                })
+            }
             const user = await UserModel.findOneAndUpdate({
                     activationCode : code
                 },
@@ -205,6 +211,12 @@ const authController = {
                     new : true
                 }
             )
+            if (!user) {
+                return res.status(400).json({
+                    messsage: "The User is not found",
+                    data: null,
+                });
+            }
             res.status(200).json({
                 message : "User Activated Successfully",
                 data : {
