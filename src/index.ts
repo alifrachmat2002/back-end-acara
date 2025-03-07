@@ -16,7 +16,7 @@ async function init() {
         const app = express();
 
         // Define the port
-        const PORT = 3000;
+        const PORT = 8080;
 
         // cors initialization
         app.use(cors());    
