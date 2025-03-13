@@ -11,7 +11,7 @@ const doc = {
     },
     servers: [
         {
-            url: "http://localhost:3000/api",
+            url: "http://localhost:8080/api",
             descripton: "Local Environment",
         },
         {
