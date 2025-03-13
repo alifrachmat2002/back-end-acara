@@ -103,7 +103,7 @@ const authController = {
             const err = error as unknown as Error;
 
             res.status(400).json({
-                message: err.message,
+                message: err,
                 data: null,
             });
         }
@@ -173,7 +173,7 @@ const authController = {
             }]
          */
         try {
-            const result = await UserModel.find({ _id: req.user?.id });
+            const result = await UserModel.findOne({ _id: req.user?.id });
             res.status(200).json({
                 message: `Hello User, here's you`,
                 data: result,
