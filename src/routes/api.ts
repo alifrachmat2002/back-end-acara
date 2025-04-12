@@ -5,6 +5,7 @@ import aclMiddleware from "../middlewares/acl.middleware";
 import { ROLES } from "../utils/constant";
 import mediaMiddleware from "../middlewares/media.middleware";
 import mediaController from "../controllers/media.controller";
+import categoryController from "../controllers/category.controller";
 
 const router = express.Router();
 
@@ -39,5 +40,20 @@ router.delete("/media/remove", [
     aclMiddleware([ROLES.ADMIN, ROLES.MEMBER]),
     mediaController.remove
 ]);
+
+// category routes
+router.post("/category",[authMiddleware, aclMiddleware([ROLES.ADMIN])],categoryController.create);
+router.get("/category",categoryController.findAll);
+router.get(
+    "/category/:id",
+    [authMiddleware, aclMiddleware([ROLES.ADMIN])],
+    categoryController.findOne
+);
+router.put("/category/:id",[authMiddleware, aclMiddleware([ROLES.ADMIN])],categoryController.update);
+router.delete(
+    "/category/:id",
+    [authMiddleware, aclMiddleware([ROLES.ADMIN])],
+    categoryController.remove
+);
 
 export default router;
