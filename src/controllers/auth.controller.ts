@@ -4,6 +4,7 @@ import UserModel from "../models/user.model";
 import { encrypt } from "../utils/encryption";
 import { generateToken, getUserData } from "../utils/jwt";
 import { IReqUser } from "../utils/interfaces"; 
+import response from "../utils/response";
 
 type RegisterType = {
     fullName : string,
@@ -91,21 +92,18 @@ const authController = {
                 password,
             });
 
-            res.status(200).json({
-                message: "Registration completed succesfully!",
-                data: {
+            response.success(
+                res,
+                {
                     username,
                     fullName,
                     email,
                 },
-            });
-        } catch (error) {
-            const err = error as unknown as Error;
+                "Registration completed succesfully!"
+            );
 
-            res.status(400).json({
-                message: err,
-                data: null,
-            });
+        } catch (error) {
+            response.error(res, error, "Registration Failed!");
         }
     },
     async login(req : Request, res : Response) {
@@ -135,18 +133,20 @@ const authController = {
             });
 
             if (!userByIdentifier) {
-                return res.status(403).json({
-                    message: "The credentials don't match any of our records",
-                });
+                return response.unauthorized(
+                    res,
+                    "The credentials don't match any of our records"
+                );
             }
 
             const passwordIsValid =
                 encrypt(password) === userByIdentifier.password;
 
             if (!passwordIsValid) {
-                return res.status(403).json({
-                    message: "The credentials don't match any of our records",
-                });
+                return response.unauthorized(
+                    res,
+                    "The credentials don't match any of our records"
+                );
             }
 
             const token = generateToken({
@@ -154,15 +154,10 @@ const authController = {
                 role: userByIdentifier.role,
             });
 
-            res.status(200).json({
-                message: "Login Successful!",
-                data: token,
-            });
+            response.success(res, token, "Login Successful!");
+
         } catch (error) {
-            const err = error as unknown as Error;
-            res.status(400).json({
-                message: err.message,
-            });
+            response.error(res, error, "Login Failed");
         }
     },
     async me(req : IReqUser, res : Response) {
@@ -174,15 +169,9 @@ const authController = {
          */
         try {
             const result = await UserModel.findOne({ _id: req.user?.id });
-            res.status(200).json({
-                message: `Hello User, here's you`,
-                data: result,
-            });
+            response.success(res, result, "Hello User, here's you");
         } catch (error) {
-            const err = error as unknown as Error;
-            res.status(400).json({
-                message: err.message,
-            });
+            response.error(res, error, "Failed to retrieve user profile.")
         }
     },
     async activation(req : Request, res : Response) { 
@@ -212,23 +201,12 @@ const authController = {
                 }
             )
             if (!user) {
-                return res.status(400).json({
-                    messsage: "The User is not found",
-                    data: null,
-                });
+                return response.unauthorized(res,"The User is not found");
             }
-            res.status(200).json({
-                message : "User Activated Successfully",
-                data : {
-                    user
-                }
-            })
 
+            response.success(res, user, "User activated successfully!")
         } catch (error) {
-            const err = error as unknown as Error;
-            res.status(400).json({
-                message: err.message,
-            });
+            response.error(res, error, "User activation failed.")
         }
     }
 
