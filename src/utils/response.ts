@@ -1,5 +1,6 @@
 import { Response } from "express"
 import { stat } from "fs";
+import mongoose from "mongoose";
 import * as Yup from "yup"
 
 type Pagination = {
@@ -19,16 +20,51 @@ export default {
         });
     },
     error(res: Response, error: unknown, message: string) {
+
+        // Handle validation error
         if(error instanceof Yup.ValidationError) {
             return res.status(400).json({
                 meta: {
                     status: 400,
                     message
                 },
-                data: error.errors
+                data: {
+                    [`${error.path}`]:error.errors[0]
+                }
             })
         }
 
+        // Handle Mongoose error
+        if (error instanceof mongoose.Error) {
+            return res.status(500).json({
+                meta: {
+                    status: 500,
+                    message: error.message
+                },
+                data: error.name
+            })
+        }
+
+        // Handle MongoDB errors
+        if ((error as any)?.code) {
+            const _err = error as any;
+            return res.status(500).json({
+                meta: {
+                    status: 500,
+                    message: _err.errorResponse.errmsg,
+                },
+                data: _err,
+            });
+        }
+
+        // handle other errors
+        res.status(500).json({
+            meta: {
+                status: 500,
+                message
+            },
+            data: error,
+        })
     },
     unauthorized(res: Response, message: string = "This action is Unauthorized") {
         res.status(403).json({
