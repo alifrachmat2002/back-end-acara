@@ -19,30 +19,53 @@ const doc = {
             descripton: "Deployed Server (Vercel)",
         },
     ],
-    components : {
-        securitySchemes : {
-            bearerAuth : {
-                type : "http",
-                scheme : "bearer"
-            }
-        },
-        schemas : {
-            LoginRequest : {
-                identifier : "akunvercel",
-                password : "password"
+    components: {
+        securitySchemes: {
+            bearerAuth: {
+                type: "http",
+                scheme: "bearer",
             },
-            RegisterRequest : {
+        },
+        schemas: {
+            LoginRequest: {
+                identifier: "akunvercel",
+                password: "password",
+            },
+            RegisterRequest: {
                 username: "alipalip",
                 fullName: "Alif Rachmat Illahi",
-                email : "myguyalip2@yopmail.com",
-                password : "P4ssword",
-                confirmPassword : "P4ssword"
+                email: "myguyalip2@yopmail.com",
+                password: "P4ssword",
+                confirmPassword: "P4ssword",
             },
-            ActivationRequest : {
-                code : "abcdef"
+            ActivationRequest: {
+                code: "abcdef",
+            },
+            CreateCategoryRequest: {
+                name: "Training",
+                description: "Training events to boost your skills.",
+                icon: "Example",
+            },
+            CreateEventRequest: {
+                name: "Event Name",
+                description: "event description.",
+                banner: "fileUrl",
+                startDate: "yyyy-mm-dd hh:mm:ss",
+                endDate: "yyyy-mm-dd hh:mm:ss",
+                isFeatured: true,
+                isOnline: true,
+                isPublished: true,
+                category: "category ObjectId",
+                location: {
+                    region: "region id",
+                    coordinates: [0, 0],
+                },
+            },
+            RemoveMediaRequest: {
+                fileUrl: ""
             }
-        }
-    }
+        },
+    },
 };
 
 swaggerAutogen({openapi : "3.0.0"})(outputFile, endpointsFile, doc)
