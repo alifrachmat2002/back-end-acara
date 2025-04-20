@@ -88,6 +88,8 @@ const EventSchema = new Schema<Event>({
     
 },{
     timestamps: true
+}).index({
+    name: "text"
 });
 
 EventSchema.pre("save",function() {
