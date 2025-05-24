@@ -59,6 +59,7 @@ const doc = {
                 location: {
                     region: "region id",
                     coordinates: [0, 0],
+                    address: "full address e.g Jl. Hatchi Hatchi Banyak Anak Kecil"
                 },
             },
             RemoveMediaRequest: {
