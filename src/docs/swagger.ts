@@ -59,12 +59,20 @@ const doc = {
                 location: {
                     region: "region id",
                     coordinates: [0, 0],
-                    address: "full address e.g Jl. Hatchi Hatchi Banyak Anak Kecil"
+                    address:
+                        "full address e.g Jl. Hatchi Hatchi Banyak Anak Kecil",
                 },
             },
             RemoveMediaRequest: {
-                fileUrl: ""
-            }
+                fileUrl: "",
+            },
+            CreateTicketRequest: {
+                name: "Ticket Example",
+                description: "sample description",
+                price: 1000,
+                quantity: 1,
+                events: "objectID",
+            },
         },
     },
 };
