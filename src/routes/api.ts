@@ -9,6 +9,7 @@ import categoryController from "../controllers/category.controller";
 import regionController from "../controllers/region.controller";
 import eventController from "../controllers/event.controller";
 import ticketController from "../controllers/ticket.controller";
+import bannerController from "../controllers/banner.controller";
 
 const router = express.Router();
 
@@ -277,6 +278,67 @@ router.delete(
     #swagger.security = [{
         "bearerAuth" : {}
     }]
+    */
+);
+
+// Banner routes
+router.post(
+    "/banners",
+    [authMiddleware, aclMiddleware([ROLES.ADMIN])],
+    bannerController.create
+    /* 
+        #swagger.tags = ["Banner"]
+        #swagger.security = [{
+            "bearerAuth" : {}
+        }]
+        #swagger.requestBody = {
+            required: true,
+            schema: {
+                $ref: "#/components/schemas/BannerRequest"
+            }
+        }
+    */
+)
+router.get(
+    "/banners",
+    bannerController.findAll
+    /* 
+        #swagger.tags = ["Banner"]
+    */
+);
+router.get(
+    "/banners/:id",
+    bannerController.findOne
+    /* 
+        #swagger.tags = ["Banner"]
+    */
+);
+router.put(
+    "/banners/:id",
+    [authMiddleware, aclMiddleware([ROLES.ADMIN])],
+    bannerController.update
+    /* 
+        #swagger.tags = ["Banner"]
+        #swagger.security = [{
+            "bearerAuth" : {}
+        }]
+        #swagger.requestBody = {
+            required: true,
+            schema: {
+                $ref: "#/components/schemas/BannerRequest"
+            }
+        }
+    */
+);
+router.delete(
+    "/banners/:id",
+    [authMiddleware, aclMiddleware([ROLES.ADMIN])],
+    bannerController.remove
+    /* 
+        #swagger.tags = ["Banner"]
+        #swagger.security = [{
+            "bearerAuth" : {}
+        }]
     */
 );
 

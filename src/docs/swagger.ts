@@ -73,6 +73,11 @@ const doc = {
                 quantity: 1,
                 events: "objectID",
             },
+            BannerRequest: {
+                title: "Banner Title Example",
+                image: "https://res.cloudinary.com/drojpl4u8/image/upload/v1744882291/hwgyltw5pjfjw9xnpb0w.png",
+                isShown: true
+            },
         },
     },
 };

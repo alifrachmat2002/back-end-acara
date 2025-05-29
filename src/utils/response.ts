@@ -75,6 +75,15 @@ export default {
             data: null
         })
     },
+    notFound(res: Response, message: string = "Not Found.") {
+        res.status(404).json({
+            meta: {
+                status: 404,
+                message
+            },
+            data: null
+        })
+    },
     pagination(res: Response, data: any[], messsage: string, pagination: Pagination) {
         res.status(200).json({
             meta : {
