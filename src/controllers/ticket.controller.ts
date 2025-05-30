@@ -64,6 +64,10 @@ export default {
 
             const result = await TicketModel.findById(id);
 
+            if (!result) {
+                return response.notFound(res, "Ticket not found.");
+            }
+
             response.success(
                 res,
                 result,
@@ -85,6 +89,10 @@ export default {
                 new: true
             });
 
+            if (!result) {
+                return response.notFound(res, "Ticket not found.");
+            }
+            
             response.success(res, result, "Ticket updated successfully!")
         } catch (error) {
             response.error(res, error, "Failed updating ticket.")
@@ -101,6 +109,10 @@ export default {
             const result = await TicketModel.findByIdAndDelete(id,{
                 new: true
             })
+
+            if (!result) {
+                return response.notFound(res, "Ticket not found.");
+            }
 
             response.success(
                 res, 
@@ -122,6 +134,10 @@ export default {
             const result = await TicketModel.find({
                 events: eventId
             }).exec();
+
+            if (!result) {
+                return response.notFound(res, "Ticket not found.");
+            }
 
             response.success(res, result, "Ticket data fetched successfully.")
         } catch (error) {

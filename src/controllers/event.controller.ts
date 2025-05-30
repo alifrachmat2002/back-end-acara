@@ -67,6 +67,11 @@ export default {
             }
 
             const result = await EventModel.findById(id);
+
+            if (!result) {
+                return response.notFound(res, "Event not found.");
+            }
+
             return response.success(res, result, "Event found successfully!");
         } catch (error) {
             return response.error(res, error, "Failed fetching event data.");
@@ -83,6 +88,11 @@ export default {
             const result = await EventModel.findOne({
                 slug: slug
             });
+
+            if (!result) {
+                return response.notFound(res, "Event not found.");
+            }
+
             return response.success(res, result, "Event found successfully!");
         } catch (error) {
             return response.error(res, error, "Failed fetching event data.");
@@ -99,6 +109,11 @@ export default {
             const result = await EventModel.findByIdAndUpdate(id, req.body, {
                 new: true,
             });
+
+            if (!result) {
+                return response.notFound(res, "Event not found.");
+            }
+
             return response.success(res, result, "Event updated successfully!");
         } catch (error) {
             return response.error(res, error, "Failed updating event data.");
@@ -115,6 +130,10 @@ export default {
             const result = await EventModel.findByIdAndDelete(id, {
                     new: true
                 });
+            
+            if (!result) {
+                return response.notFound(res, "Event not found.");
+            }
 
             return response.success(res, result, "Event removed successfully!");
         } catch (error) {

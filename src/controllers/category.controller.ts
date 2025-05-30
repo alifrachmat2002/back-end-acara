@@ -62,6 +62,11 @@ export default {
             }
 
             const result = await CategoryModel.findById(id);
+
+            if (!result) {
+                return response.notFound(res, "Category not found.");
+            }
+
             response.success(
                 res,
                 result,
@@ -82,6 +87,11 @@ export default {
             const result = await CategoryModel.findByIdAndUpdate(id,req.body,{
                 new: true
             });
+
+            if (!result) {
+                return response.notFound(res, "Category not found.");
+            }
+
             response.success(
                 res,
                 result,
@@ -100,6 +110,11 @@ export default {
            }
 
            const result = await CategoryModel.findByIdAndDelete(id);
+
+           if (!result) {
+               return response.notFound(res, "Category not found.");
+           }
+
            response.success(res, result, "Category data deleted successfully!"); 
         } catch (error) {
             response.error(res, error, "Failed removing category data.")

@@ -58,6 +58,11 @@ export default {
             }
 
             const result = await BannerModel.findById(id);
+
+            if (!result) {
+                return response.notFound(res, "Banner not found.");
+            }
+
             return response.success(
                 res,
                 result,
@@ -78,6 +83,11 @@ export default {
             const result = await BannerModel.findByIdAndUpdate(id, req.body, {
                 new: true,
             });
+
+            if (!result) {
+                return response.notFound(res, "Banner not found.");
+            }
+
             return response.success(res, result,
                 "Banner updated successfully.")
         } catch (error) {
@@ -93,6 +103,11 @@ export default {
             }
 
             const result = await BannerModel.findByIdAndDelete(id);
+
+            if (!result) {
+                return response.notFound(res, "Banner not found.");
+            }
+
             return response.success(
                 res,
                 result,
