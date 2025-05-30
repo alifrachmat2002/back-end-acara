@@ -57,6 +57,11 @@ export default {
     async findOne(req: Request, res: Response) {
         try {
             const { id } = req.params;
+
+            if (!isValidObjectId(id)) {
+                return response.notFound(res, "Ticket not found.")
+            }
+
             const result = await TicketModel.findById(id);
 
             response.success(
@@ -71,6 +76,11 @@ export default {
     async update(req: Request, res: Response) {
         try {
             const { id } = req.params;
+
+            if (!isValidObjectId(id)) {
+                return response.notFound(res, "Ticket not found.");
+            }
+
             const result = await TicketModel.findByIdAndUpdate(id, req.body,{
                 new: true
             });
@@ -83,6 +93,11 @@ export default {
     async remove(req: Request, res: Response) {
         try {
             const { id } = req.params;
+
+            if (!isValidObjectId(id)) {
+                return response.notFound(res, "Ticket not found.");
+            }
+
             const result = await TicketModel.findByIdAndDelete(id,{
                 new: true
             })
@@ -101,7 +116,7 @@ export default {
             const { eventId } = req.params;
 
             if (!isValidObjectId(eventId)) {
-                response.error(res, null, "Ticket not found.")
+                response.notFound(res, "Ticket not found.")
             }
 
             const result = await TicketModel.find({

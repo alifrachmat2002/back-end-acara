@@ -3,6 +3,7 @@ import { Response } from "express";
 import { IPaginationQuery, IReqUser } from "../utils/interfaces";
 import CategoryModel, { categoryDAO } from "../models/category.model";
 import response from "../utils/response";
+import { isValidObjectId } from "mongoose";
 
 export default {
     async create(req: IReqUser, res: Response) {
@@ -55,6 +56,11 @@ export default {
     async findOne(req: IReqUser, res: Response) {
         try {
             const { id } = req.params;
+
+            if (!isValidObjectId(id)) {
+                return response.notFound(res, "Category not found.")
+            }
+
             const result = await CategoryModel.findById(id);
             response.success(
                 res,
@@ -68,6 +74,11 @@ export default {
     async update(req: IReqUser, res: Response) {
         try {
             const { id } = req.params;
+
+            if (!isValidObjectId(id)) {
+                return response.notFound(res, "Category not found.")
+            }
+
             const result = await CategoryModel.findByIdAndUpdate(id,req.body,{
                 new: true
             });
@@ -83,6 +94,11 @@ export default {
     async remove(req: IReqUser, res: Response) {
         try {
            const { id } = req.params;
+
+           if (!isValidObjectId(id)) {
+               return response.notFound(res, "Category not found.");
+           }
+
            const result = await CategoryModel.findByIdAndDelete(id);
            response.success(res, result, "Category data deleted successfully!"); 
         } catch (error) {
