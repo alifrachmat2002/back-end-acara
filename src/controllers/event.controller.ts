@@ -18,27 +18,45 @@ export default {
         }
     },
     async findAll(req: IReqUser, res: Response) {
-        try {
+        
+
+        try {          
+            const buildQuery = (filter: any) => {
+                let query: FilterQuery<TEvent> = {};
+
+                if (filter.search) query.$text = { $search: filter.search };
+                if (filter.category) query.category = filter.category;;
+                if (filter.isFeatured) query.isFeatured = filter.isFeatured;
+                if (filter.isOnline) query.isOnline = filter.isOnline;
+                if (filter.isPublished) query.isPublished = filter.isPublished;
+
+                return query;
+            };
+
             const {
                 limit = 10,
                 page = 1,
                 search,
-            } = req.query as unknown as IPaginationQuery;
+                category,
+                isOnline,
+                isFeatured,
+                isPublished
+                
+            } = req.query;
 
-            const query: FilterQuery<Event> = {};
-
-            if (search) {
-                Object.assign(query, {
-                    ...query,
-                    $text: {
-                        $search: search,
-                    },
-                });
-            }
+            const query = buildQuery({
+                limit,
+                page,
+                search,
+                category,
+                isOnline,
+                isFeatured,
+                isPublished,
+            });
 
             const result = await EventModel.find(query)
-                .skip((page - 1) * limit)
-                .limit(limit)
+                .skip((+page - 1) * +limit)
+                .limit(+limit)
                 .sort({ createdAt: -1 })
                 .exec();
 
@@ -49,9 +67,9 @@ export default {
                 result,
                 "Event data fetched successfully!",
                 {
-                    currentPage: page,
+                    currentPage: +page,
                     total: count,
-                    totalPages: Math.ceil(count / limit),
+                    totalPages: Math.ceil(count / +limit),
                 }
             );
         } catch (error) {
