@@ -18,6 +18,8 @@ export interface User {
     createdAt? : string
 }
 
+export const USER_MODEL_NAME = "User";
+
 const UserSchema = new Schema<User>({
     fullName : {
         type : Schema.Types.String,
@@ -100,6 +102,6 @@ UserSchema.post("save", async function(doc, next) {
     }
 })
 
-const UserModel = mongoose.model("User", UserSchema);
+const UserModel = mongoose.model(USER_MODEL_NAME, UserSchema);
 
 export default UserModel;
