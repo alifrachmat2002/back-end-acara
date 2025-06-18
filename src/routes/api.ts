@@ -10,6 +10,7 @@ import regionController from "../controllers/region.controller";
 import eventController from "../controllers/event.controller";
 import ticketController from "../controllers/ticket.controller";
 import bannerController from "../controllers/banner.controller";
+import orderController from "../controllers/order.controller";
 
 const router = express.Router();
 
@@ -434,5 +435,61 @@ router.delete(
         }]
     */
 );
+
+router.post(
+    "/orders",
+    [authMiddleware, aclMiddleware([ROLES.ADMIN])],
+    orderController.create
+    /* 
+    #swagger.tags = ["Orders"]
+    #swagger.security = [{
+        "bearerAuth": {}
+    }]
+    #swagger.requestBody = {
+        required: true,
+        schema: {
+            $ref: "#/components/schemas/CreateOrderRequest"
+        }
+    }
+     */
+);
+
+router.get(
+    "/orders",
+    [authMiddleware, aclMiddleware([ROLES.ADMIN])],
+    orderController.findAll
+    /* 
+    #swagger.tags = ["Orders"]
+    #swagger.security = [{
+        "bearerAuth": {}
+    }]
+     */
+);
+
+router.get(
+    "/orders/:orderId",
+    [authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.MEMBER])],
+    orderController.findOne
+    /*
+    #swagger.tags = ["Orders"]
+    #swagger.security = [{
+        "bearerAuth" : {}
+    }]
+     */
+);
+
+router.put(
+    "/orders/orderId/complete",
+    [authMiddleware, aclMiddleware([ROLES.MEMBER])],
+    orderController.complete
+    /*
+    #swagger.tags = ["Orders"]
+    #swagger.security = [{
+        "bearerAuth" : {}
+    }]
+    */
+)
+
+
 
 export default router;

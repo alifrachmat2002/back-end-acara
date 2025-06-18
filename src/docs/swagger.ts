@@ -78,6 +78,11 @@ const doc = {
                 image: "https://res.cloudinary.com/drojpl4u8/image/upload/v1744882291/hwgyltw5pjfjw9xnpb0w.png",
                 isShown: true
             },
+            CreateOrderRequest: {
+                events: "event objectId",
+                ticket: "ticket objectId",
+                quantity: 1
+            }
         },
     },
 };
